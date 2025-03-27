@@ -1,0 +1,61 @@
+[
+  {
+    "country": "New Zealand",
+    "cities": [
+      {
+        "name": "Auckland"
+      },
+      {
+        "name": "Wellington"
+      },
+      {
+        "name": "Christchurch"
+      },
+      {
+        "name": "Hamilton"
+      },
+      {
+        "name": "Tauranga"
+      },
+      {
+        "name": "Napier Hastings"
+      },
+      {
+        "name": "Dunedin"
+      },
+      {
+        "name": "Palmerston North"
+      },
+      {
+        "name": "Nelson"
+      },
+      {
+        "name": "Rotorua"
+      },
+      {
+        "name": "Whangarei"
+      },
+      {
+        "name": "New Plymouth"
+      },
+      {
+        "name": "Invercargill"
+      },
+      {
+        "name": "Whanganui"
+      },
+      {
+        "name": "Gisborne"
+      },
+      {
+        "name": "Queenstown"
+      },
+      {
+        "name": "Hastings"
+      },
+      {
+        "name": "Porirua"
+      }
+    ]
+  }
+]

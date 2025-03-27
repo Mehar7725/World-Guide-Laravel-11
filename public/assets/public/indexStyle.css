@@ -1,0 +1,60 @@
+/* Country Cards Styling */
+.country-card {
+  transition: transform 0.3s ease;
+  width: 400px;
+  max-width: 100%;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.country-card:hover {
+  transform: scale(1.02);
+}
+
+#countryCardsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1185px) {
+  .country-card {
+    width: 293.33px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #countryCardsContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .country-card {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .country-card {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .country-card {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #countryCardsContainer {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .country-card {
+    width: 90%;
+  }
+}
+
+.inlineimage{max-width:470px;margin-right: 8px;margin-left: 10px}.images{display: inline-block;max-width: 98%;height: auto;width: 22%;margin: 1%;left:20px;text-align: center}

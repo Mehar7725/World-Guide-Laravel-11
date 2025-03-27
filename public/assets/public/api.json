@@ -1,0 +1,187 @@
+{
+  "info": {
+    "name": "Laravel API Collection",
+    "description": "Postman collection for testing Laravel API endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "City Endpoints",
+      "item": [
+        {
+          "name": "Get All Cities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cities",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cities"]
+            }
+          }
+        },
+        {
+          "name": "Create City",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"New City\", \"country_id\": 1}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/cities",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cities"]
+            }
+          }
+        },
+        {
+          "name": "Get City by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cities/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cities", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Country Endpoints",
+      "item": [
+        {
+          "name": "Get All Countries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/countries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "countries"]
+            }
+          }
+        },
+        {
+          "name": "Create Country",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"New Country\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/countries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "countries"]
+            }
+          }
+        },
+        {
+          "name": "Get Country by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/countries/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "countries", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"user@example.com\", \"password\": \"password\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "login"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost"
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    }
+  ]
+}
