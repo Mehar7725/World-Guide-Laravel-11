@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PublicController;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -20,6 +21,15 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/signup', 'UserRegister');  
     Route::post('/login', 'UserSignIn');  
     Route::get('/logout', 'UserLogOut');
+
+    // Sign With Google ================
+    Route::get('/google/redirect', 'redirectToGoogle')->name('google.redirect');
+    Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
+    // Sign With Google ================
+     //Start ==== With Facebook account =====
+     Route::get('/facebook/redirect','facebookRedirect');
+     Route::get('/auth/facebook/callback','facebookCallback');
+       //End ==== With Facebook account =====
 });
 
 Route::controller(AdminController::class)->group(function () {

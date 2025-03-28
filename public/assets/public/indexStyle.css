@@ -58,3 +58,448 @@
 }
 
 .inlineimage{max-width:470px;margin-right: 8px;margin-left: 10px}.images{display: inline-block;max-width: 98%;height: auto;width: 22%;margin: 1%;left:20px;text-align: center}
+
+
+
+
+
+
+/* New CSS Extend For Map */
+
+/* Navbar.css */
+/* ...Other styles */
+html {
+  scroll-behavior: smooth;
+}
+
+.box-below-link {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-150%);
+  width: 100%;
+  border-radius: 100px;
+  /* Adjust the width of the box */
+  height: 2px; /* Adjust the height of the box */
+  background-color: white; /* Box color */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for the transform property */
+}
+
+.box-below-Inactive {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Adjust the width of the box */
+  height: 3px; /* Adjust the height of the box */
+  background-color: white; /* Box color */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for the transform property */
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-150%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.box-below-link {
+  animation: slideIn 0.8s ease-in-out forwards; /* Use the slideIn animation */
+}
+
+.fixed {
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+}
+
+.bg-white {
+  background-color: white; /* White background when scrolled */
+}
+
+.bg-transparent {
+  background-color: transparent; /* Transparent background initially */
+}
+
+.p-3 {
+  padding: 12px; /* Adjust padding as necessary */
+}
+
+.shadow-lg {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth when scrolled */
+}
+
+/* Adjust link colors for different states */
+.text-main {
+  color: #3498db; /* Change to your desired color */
+}
+
+.text-white {
+  color: white; /* White color for links when navbar is transparent */
+}
+
+.MapContainer {
+  position: relative !important;
+  width: 80% !important;
+}
+
+.tooltip {
+  position: absolute !important;
+  padding: 5px 10px !important;
+  background-color: black !important;
+  color: white !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  opacity: 0;
+  transition: opacity 0.2s !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+#map {
+  width: 90vw;
+  max-width: 1000px;
+  height: fit-content;
+  overflow-x: auto;
+}
+.selected-country {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #0071a4;
+}
+.MapContainer {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MapContainer svg path {
+  fill: #7798ba;
+  cursor: pointer;
+}
+
+.MapContainer svg path:hover {
+  fill: #356ca3;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: transparent;
+  /* padding: 20px; */
+  border: none;
+  margin: 15% auto; /* 15% from the top and centered */
+  position: relative;
+  width: 50%; /* Could be more or less, depending on screen size */
+  min-width: 500px;
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #fff;
+
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 770px) {
+  #button-container {
+    flex-direction: column;
+    bottom: -100% !important;
+  }
+  .header-container {
+    margin-bottom: 600px !important;
+  }
+}
+@media screen and (max-width: 1185px) {
+  .contryCard {
+    width: 293.33px !important;
+    max-width: 293.33px !important;
+  }
+}
+@media screen and (max-width: 1160px) {
+  .ads-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #countryCardsContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+  .contryCard {
+    width: 400px !important;
+    max-width: 400px !important;
+  }
+  .MapContainer {
+    width: 80% !important;
+    margin: 0 auto !important;
+  }
+}
+@media screen and (max-width: 900px) {
+  .contryCard {
+    width: 350px !important;
+    max-width: 350px !important;
+  }
+}
+@media screen and (max-width: 800px) {
+  .contryCard {
+    width: 300px !important;
+    max-width: 300px !important;
+  }
+  .video-section {
+    flex-direction: column !important;
+    width: 90% !important;
+    .left,
+    .right {
+      width: 100% !important;
+    }
+  }
+}
+@media screen and (max-width: 780px) {
+  .ads-section {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  .ads-card {
+    width: 90% !important;
+  }
+}
+@media screen and (max-width: 700px) {
+  #countryCardsContainer {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  .contryCard {
+    width: 90% !important;
+    max-width: 90% !important;
+  }
+}
+@media screen and (max-width: 550px) {
+  .nav-btns {
+    flex-direction: column;
+    align-items: center !important;
+    row-gap: 5px;
+  }
+  .header-container {
+    margin-bottom: 700px !important;
+  }
+  .desc-section {
+    width: 90% !important;
+    padding: 0px 0px !important;
+  }
+}
+
+.MapContainer {
+  position: relative !important;
+  width: 80% !important;
+}
+
+.tooltip {
+  position: absolute !important;
+  padding: 5px 10px !important;
+  background-color: black !important;
+  color: white !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  opacity: 0;
+  transition: opacity 0.2s !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+#map {
+  width: 90vw;
+  max-width: 1000px;
+  height: fit-content;
+  overflow-x: auto;
+}
+.selected-country {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #0071a4;
+}
+.MapContainer {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MapContainer svg path {
+  fill: #7798ba;
+  cursor: pointer;
+}
+
+.MapContainer svg path:hover {
+  fill: #356ca3;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: transparent;
+  /* padding: 20px; */
+  border: none;
+  margin: 15% auto; /* 15% from the top and centered */
+  position: relative;
+  width: 50%; /* Could be more or less, depending on screen size */
+  min-width: 500px;
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #fff;
+
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 770px) {
+  #button-container {
+    flex-direction: column;
+    bottom: -100% !important;
+  }
+  .header-container {
+    margin-bottom: 600px !important;
+  }
+}
+@media screen and (max-width: 1185px) {
+  .contryCard {
+    width: 293.33px !important;
+    max-width: 293.33px !important;
+  }
+}
+@media screen and (max-width: 1160px) {
+  .ads-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #countryCardsContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+  .contryCard {
+    width: 400px !important;
+    max-width: 400px !important;
+  }
+  .MapContainer {
+    width: 80% !important;
+    margin: 0 auto !important;
+  }
+}
+@media screen and (max-width: 900px) {
+  .contryCard {
+    width: 350px !important;
+    max-width: 350px !important;
+  }
+}
+@media screen and (max-width: 800px) {
+  .contryCard {
+    width: 300px !important;
+    max-width: 300px !important;
+  }
+  .video-section {
+    flex-direction: column !important;
+    width: 90% !important;
+    .left,
+    .right {
+      width: 100% !important;
+    }
+  }
+}
+@media screen and (max-width: 780px) {
+  .ads-section {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  .ads-card {
+    width: 90% !important;
+  }
+}
+@media screen and (max-width: 700px) {
+  #countryCardsContainer {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  .contryCard {
+    width: 90% !important;
+    max-width: 90% !important;
+  }
+}
+@media screen and (max-width: 550px) {
+  .nav-btns {
+    flex-direction: column;
+    align-items: center !important;
+    row-gap: 5px;
+  }
+  .header-container {
+    margin-bottom: 700px !important;
+  }
+  .desc-section {
+    width: 90% !important;
+    padding: 0px 0px !important;
+  }
+}

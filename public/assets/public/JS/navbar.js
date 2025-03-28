@@ -58,10 +58,12 @@ links.forEach((link) => {
   // Sign In Button
 const loginBtn = document.createElement("button");
 loginBtn.id = "loginBtn";
+loginBtn.setAttribute("data-bs-toggle", "modal");
+loginBtn.setAttribute("data-bs-target", "#exampleModal");
 loginBtn.className =
   "flex items-center gap-x-1 text-white hover:bg-white hover:text-[#42A7DF] px-2 py-2 rounded-lg transition-all duration-700 cursor-pointer";
 const userIcon = document.createElement("i");
-userIcon.className = "fas fa-user text-2xl";
+userIcon.className = "fas fa-user text-2xl"; 
 const signInText = document.createElement("div");
 signInText.textContent = "Sign In";
 loginBtn.append(userIcon, signInText);

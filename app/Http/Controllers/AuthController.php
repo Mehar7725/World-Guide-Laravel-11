@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -319,6 +320,109 @@ public function UserLogOut(){
 
 
   // User Authentication Functions END ==========================
+
+
+
+    // Login & SignUp With Google Start ==========================
+    
+    public function redirectToGoogle(Request $request)
+    {
+        
+            return Socialite::driver('google')->redirect();
+       }
+        
+        public function handleGoogleCallback()
+        {
+            
+            
+            
+            $googleUser = Socialite::driver('google')->user();
+            
+           
+                $user = User::where('email', $googleUser->email)->first();
+         
+        
+        
+        if(!$user) { 
+            $user = User::create([
+                'name' => $googleUser->name, 
+                'email' => $googleUser->email,
+                'email_verify' => 'verified', 
+                'google_id' => $googleUser->id, 
+                'password' => Hash::make(rand(100000,999999))]);
+            }else{
+                if ($user->status == 1) {
+                    return redirect()->back()->with('error','Your Account is Blocked from Admin!');
+                  }
+            if ($user->google_id == null) {
+                $user->google_id = $googleUser->id; 
+                $user->update();
+            }
+            
+        }
+        
+        Auth::login($user);
+        
+        return redirect('/');
+  
+        
+    
+}
+
+// Login & SignUp With Google End ==========================
+
+
+// Login & SignUp With Facebook Start ==========================
+
+
+public function facebookRedirect(Request $request)
+{
+      
+      return Socialite::driver('facebook')->redirect();
+    }
+
+
+    public function facebookCallback()
+    {
+        
+        
+        
+        $facebookUser = Socialite::driver('facebook')->user();
+        
+       
+            $user = User::where('email', $facebookUser->email)->first();
+            
+  
+    
+    
+    if(!$user) { 
+        $user = User::create([
+            'name' => $facebookUser->name, 
+            'email' => $facebookUser->email, 
+            'facebook_id' => $facebookUser->id, 
+            'password' => Hash::make(rand(100000,999999))]);
+        }else{
+            if ($user->status == 1) {
+                return redirect()->back()->with('error','Your Account is Blocked from Admin!');
+              }
+        if ($user->facebook_id == null) {
+            $user->facebook_id = $facebookUser->id; 
+            $user->update();
+        }
+        
+    }
+    
+    Auth::login($user);
+    
+    return redirect('/');
+    
+ 
+
+
+}
+
+
+// Login & SignUp With Facebook End ==========================
 
    
 }

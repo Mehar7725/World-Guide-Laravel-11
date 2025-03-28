@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('google_id')->unique();
+            $table->string('facebook_id')->unique();
             $table->tinyInteger('role')->default(0);
             $table->tinyInteger('status')->default(0);
             $table->rememberToken();
