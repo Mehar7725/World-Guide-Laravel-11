@@ -136,7 +136,7 @@ class PublicController extends Controller
             $paymentIntent = \Stripe\PaymentIntent::create([
                 'amount' => round($price * 100), // Convert dollars to cents
                 'currency' => 'usd',
-                'capture_method' => 'auto',
+                'capture_method' => 'automatic',
                 'automatic_payment_methods' => ['enabled' => true],
             ]);
     
@@ -188,7 +188,7 @@ class PublicController extends Controller
         $add->all_faq = $request->all_faq;
         $add->description = $request->description;
         $add->video = $request->video;
-        $add->status = 1;
+        $add->status = 0;
     
         // Ensure the upload directory exists
         $directory = public_path('/assets/adds/data_' . Auth::user()->id);
@@ -220,6 +220,7 @@ class PublicController extends Controller
             $add->logo = $logoName;
         }
     
+        
         $add->save();
     
         if ($add) {

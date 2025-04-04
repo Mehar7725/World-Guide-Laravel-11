@@ -325,49 +325,48 @@ public function UserLogOut(){
 
     // Login & SignUp With Google Start ==========================
     
-    public function redirectToGoogle(Request $request)
+    public function redirectToGoogle()
     {
-        
-            return Socialite::driver('google')->redirect();
-       }
-        
-        public function handleGoogleCallback()
-        {
-            
-            
-            
-            $googleUser = Socialite::driver('google')->user();
-            
-           
-                $user = User::where('email', $googleUser->email)->first();
-         
-        
-        
-        if(!$user) { 
-            $user = User::create([
-                'name' => $googleUser->name, 
-                'email' => $googleUser->email,
-                'email_verify' => 'verified', 
-                'google_id' => $googleUser->id, 
-                'password' => Hash::make(rand(100000,999999))]);
-            }else{
-                if ($user->status == 1) {
-                    return redirect()->back()->with('error','Your Account is Blocked from Admin!');
-                  }
-            if ($user->google_id == null) {
-                $user->google_id = $googleUser->id; 
-                $user->update();
-            }
-            
-        }
-        
-        Auth::login($user);
-        
-        return redirect('/');
-  
-        
+        return Socialite::driver('google')->redirect();
+    }
+
     
-}
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')
+                ->stateless()
+                ->setHttpClient(new \GuzzleHttp\Client(['verify' => false])) // Disable SSL verification
+                ->user();
+    
+            $user = User::where('email', $googleUser->email)->first();
+    
+            if (!$user) { 
+                $user = User::create([
+                    'name' => $googleUser->name, 
+                    'email' => $googleUser->email,
+                    'email_verify' => 'verified', 
+                    'google_id' => $googleUser->id, 
+                    'password' => Hash::make(rand(100000,999999))
+                ]);
+            } else {
+                if ($user->status == 1) {
+                    return redirect()->back()->with('error', 'Your Account is Blocked by Admin!');
+                }
+                if ($user->google_id == null) {
+                    $user->google_id = $googleUser->id;
+                    $user->update();
+                }
+            }
+    
+            Auth::login($user);
+            return redirect('/');
+    
+        } catch (\Exception $e) {
+            return redirect('/')->with('error', 'Google authentication failed: ' . $e->getMessage());
+        }
+    }
+    
 
 // Login & SignUp With Google End ==========================
 

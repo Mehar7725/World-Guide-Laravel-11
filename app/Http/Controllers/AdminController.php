@@ -607,14 +607,6 @@ public function AddAdminAction($id,$action)   {
         
         return view('Admin.edit-listing', compact('add','country','city','category','selected_country','selected_city','selected_category'));
     
-    } elseif ($action == 'disable') {
-        $add->status = 0 ;
-        $add->update();
-        if ($add) {
-            return redirect()->back()->with('success','Add Disabled Successfully!');
-        } else {
-            return redirect()->back()->with('error','Something Went Rong,Tryagain Later!');
-        }
     } elseif ($action == 'active') {
         $add->status = 1;
         $add->update();
@@ -623,7 +615,15 @@ public function AddAdminAction($id,$action)   {
         } else {
             return redirect()->back()->with('error','Something Went Rong,Tryagain Later!');
         }
-    }elseif($action == 'delete'){
+    } elseif ($action == 'disable') {
+        $add->status = 2 ;
+        $add->update();
+        if ($add) {
+            return redirect()->back()->with('success','Add Disabled Successfully!');
+        } else {
+            return redirect()->back()->with('error','Something Went Rong,Tryagain Later!');
+        }
+    } elseif($action == 'delete'){
         $add->delete();
     if ($add) {
         return redirect()->back()->with('success','Add Deleted Successfully!');

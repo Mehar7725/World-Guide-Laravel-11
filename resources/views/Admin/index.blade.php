@@ -519,10 +519,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 												<td>
 													@if ($item->status == 0)
-													<span class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px" style="min-height: 18px">Disabled</span>
+													<span class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px" style="min-height: 18px">Pending</span>
 														@elseif($item->status == 1)
 														<span class="badge d-block bg-theme text-theme-900 rounded-0 pt-5px w-70px" style="min-height: 18px">Active</span>
-											    
+														@elseif($item->status == 2)
+														<span class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px" style="min-height: 18px">Disabled</span>
+														
 														@else
 														<span class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px" style="min-height: 18px">Duration Completed</span>
 														@endif
@@ -535,13 +537,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 												<button class="btn action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">...</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 													<a class="dropdown-item" href="{{ url('add-action/'.$item->id.'/edit') }}"><li>Edit Add</li></a>
-													@if ($item->status == 2)
-													@elseif($item->status == 0)
-													<a class="dropdown-item" href="{{ url('add-action/'.$item->id.'/active') }}"><li>Active Add</li></a> 
-													@else
+													@if ($item->status == 1)
 													<a class="dropdown-item" href="{{ url('add-action/'.$item->id.'/disable') }}"><li>Disable Add</li></a>
+													 @else
+													<a class="dropdown-item" href="{{ url('add-action/'.$item->id.'/active') }}"><li>Active Add</li></a> 
 													  @endif
-												  <a class="dropdown-item" href="{{ url('add-action/'.$item->id.'/delete') }}"><li>Delete User</li></a>
+												  <a class="dropdown-item" href="{{ url('add-action/'.$item->id.'/delete') }}"><li>Delete Add</li></a>
 												</ul>
 											  </div>
 											</td>
@@ -598,6 +599,63 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 										 
 									</tbody>
 								</table>
+
+
+
+								
+  <!-- CARD SECTION END HERE -->
+<div class="demo" id="pagination_main" style="display: flex;justify-content: center;">
+	@if ($adds->hasPages())
+	<nav class="pagination-outer" aria-label="Page navigation">
+	  <ul class="pagination">
+		  {{-- Previous Page Link --}}
+		  @if ($adds->onFirstPage())
+			  <li class="page-item disabled" aria-disabled="true">
+				  <span class="page-link">«</span>
+			  </li>
+		  @else
+			  <li class="page-item">
+				  <a class="page-link" href="{{ $adds->previousPageUrl() }}" rel="prev">«</a>
+			  </li>
+		  @endif
+  
+		  {{-- Pagination Elements --}}
+		  @php
+			  $start = max($adds->currentPage() - 2, 1);
+			  $end = min($adds->currentPage() + 2, $adds->lastPage());
+		  @endphp
+  
+		  @for ($i = $start; $i <= $end; $i++)
+			  @if ($i == $adds->currentPage())
+				  <li class="page-item active"><a class="page-link">{{ $i }}</a></li>
+			  @else
+				  <li class="page-item">
+					  <a class="page-link" href="{{ $adds->url($i) }}">{{ $i }}</a>
+				  </li>
+			  @endif
+		  @endfor
+  
+		  {{-- Next Page Link --}}
+		  @if ($adds->hasMorePages())
+			  <li class="page-item">
+				  <a class="page-link" href="{{ $adds->nextPageUrl() }}" rel="next">»</a>
+			  </li>
+		  @else
+			  <li class="page-item disabled">
+				  <span class="page-link">»</span>
+			  </li>
+		  @endif
+	  </ul>
+  </nav>
+	@endif
+  </div>
+
+
+
+
+
+
+
 							</div>
 							<!-- END table -->
 						</div>
