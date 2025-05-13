@@ -37,6 +37,7 @@
   </script>
     <title>Country</title>
   </head>
+  
   <body class="relative">
      <!-- Navbar -->
      <script src="assets/public/JS/navbar.js"></script>
@@ -200,6 +201,10 @@
               </script>
               <div class="w-full h-[4px] bg-[#00C1CF]"></div>
             </div>
+
+
+
+
             <div class="wrapper" id="accordions-wrapper"><input type="radio" id="radio-best-time-to-go" name="accordion">
               <label class="item" for="radio-best-time-to-go">
                 <div class="title">
@@ -395,7 +400,7 @@
         
         @if ($city)
         @foreach ($city as $item)
-        <a href="{{ route('city.show', ['name' => $name ?? 'unknown', 'id' => $item->id, 'code' => $code ?? 'NA', 'city_id' => $item->id, 'city' => $item->city_name ?? 'NA']) }}">
+        <a href="{{ route('city.show', ['name' => $name ?? 'unknown', 'id' => $country_id, 'code' => $code ?? 'NA', 'city_id' => $item->id, 'city' => $item->city_name ?? 'NA']) }}">
           <div class="max-w-[360px] w-[360px] flex flex-col gap-y-2 h-[29.5vh] items-center justify-between contryCard">
             <img src="assets/city_img/{{$item->city_image}}" alt="{{$item->city_name}}" class="min-h-[168px] h-[168px] w-full object-cover shadow-[rgba(0,0,0,0.35)_0px_5px_15px] cursor-pointer">
             <div class="bg-gradient-to-l from-[#11bed0] to-[#34a853] hover:from-[#34a853] hover:to-[#11bed0] transition-all ease-in-out duration-900 w-full h-[6vh] flex items-center justify-center gap-x-2 text-white py-3 rounded-lg select-none cursor-pointer">

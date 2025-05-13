@@ -103,7 +103,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
                                         <td>{{$item->id}}</td>
                                         <td>{{$item->city_name}}</td>
                                         @php
-                                            $country = \App\Models\Country::where('id','=',$item->id)->first();
+                                            $country = \App\Models\Country::where('id','=',$item->country)->first();
                                         @endphp
                                         <td>{{$country->country_name}}</td>
                                         <td>@if ($item->status == 1) Active @else  Inactive  @endif  </td>

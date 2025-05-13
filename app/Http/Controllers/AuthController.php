@@ -195,19 +195,36 @@ public function LogOut(){
 
 
        
+    //   User Register Page Function Start ===========
+    public function UserSingUp() { 
+
+        
+
+        if (Auth::user() ) {
+            
+            return redirect('/');
+        } 
+        
+        return view('Public-site.signup');
+
+    }
     //   Admin Register Function Start ===========
     public function UserRegister(Request $request) { 
 
         
         $password = $request->input('password');
+
+        if ($request->profile == null) {
+            return redirect()->back()->with('error','Profile image is Required!');
+        }
     
 
-        if ($request->email == null || $request->password == null || $request->c_password == null || $request->name == null  ) {
+        if ($request->email == null || $request->password == null || $request->c_password == null || $request->name == null || $request->number == null|| $request->country == null|| $request->city == null ) {
             
             return redirect()->back()->with('error','All Fields Are Required!');
         } 
 
-         if ($request->password !=  $request->c_password ) {
+          if ($request->password !=  $request->c_password ) {
          
             return redirect()->back()->with('error','Password did not Matched!');
              }
@@ -237,11 +254,26 @@ public function LogOut(){
 
   
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email, 
-            'password' => Hash::make($request->password),  
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->number = $request->number;
+        $user->country = $request->country;
+        $user->city = $request->city; 
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+
+
+        $directory = public_path('/assets/profiles');
+                // Main File Upload (Fixed)
+                if ($request->hasFile('profile')) {
+                    $profile = $request->file('profile');
+                    $profileName = time() . '_' . $profile->getClientOriginalName(); // Avoid duplicate names
+                    $profile->move($directory, $profileName);
+                    $user->profile = $profileName;
+                }
+
+                $user->save();
+    
 
         if ($user) {
            

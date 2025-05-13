@@ -630,41 +630,45 @@ function previewImage(input, previewId) {
    
         // Map Embed Script ==========
    
-    document.getElementById('map_url').addEventListener('focusout', function () {
-        const input = this.value.trim();
-        const mapError = document.getElementById('mapError');
-        const mapPreview = document.getElementById('mapPreview');
+        document.getElementById('map_url').addEventListener('focusout', function () {
+    const inputField = this;
+    let input = inputField.value.trim();
+    const mapError = document.getElementById('mapError');
+    const mapPreview = document.getElementById('mapPreview');
 
-        const iframeSrcRegex = /<iframe[^>]+src="([^"]+)"[^>]*>/;
-        const googleMapsRegex = /^https:\/\/www\.google\.com\/maps\/embed\?pb=.+/;
+    // Regex to extract src from iframe
+    const iframeSrcRegex = /<iframe[^>]*src=["']([^"']+)["']/i;
+    const googleMapsEmbedRegex = /^https:\/\/www\.google\.com\/maps\/embed\?pb=.+/;
 
-        let extractedUrl = input;
-
-        if (iframeSrcRegex.test(input)) {
-            const match = iframeSrcRegex.exec(input);
-            extractedUrl = match ? match[1] : input;
+    // If input is full iframe, extract only the src
+    if (iframeSrcRegex.test(input)) {
+        const match = input.match(iframeSrcRegex);
+        if (match && match[1]) {
+            input = match[1]; // Extract the src only
         }
+    }
 
-        if (googleMapsRegex.test(extractedUrl)) {
-            mapError.style.display = 'none';
-            mapPreview.innerHTML = `
-                <iframe 
-                    src="${extractedUrl}" 
-                    width="600" 
-                    height="450" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>`;
-            console.log('Iframe Updated:', mapPreview.innerHTML);
-        } else {
-            mapError.style.display = 'block';
-            mapError.textContent = 'Please enter a valid Google Maps embed code or URL.';
-            mapPreview.innerHTML = '';
-            console.log('Invalid URL');
-        }
-    });
+    // Validate and update the input and map preview
+    if (googleMapsEmbedRegex.test(input)) {
+        mapError.style.display = 'none';
+        inputField.value = input; // Set only the src back to the input
+
+        mapPreview.innerHTML = `
+            <iframe 
+                src="${input}" 
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>`;
+    } else {
+        mapError.style.display = 'block';
+        mapError.textContent = 'Please enter a valid Google Maps embed iframe or embed URL.';
+        mapPreview.innerHTML = '';
+    }
+});
 });
 
  

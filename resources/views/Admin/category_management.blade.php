@@ -494,11 +494,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 
          <!-- Add Category Modal -->
-         <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+         <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="addCategoryModalLabel">
+                        <h5 class="modal-title" id="editCategoryModalLabel">
                             <i class="fas fa-plus-circle me-2"></i>Edit Category
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -752,7 +752,7 @@ $('#country').on('change', function () {
        data:{   country:country,  _token: '{{csrf_token()}}'},
        dataType: 'json',
        success: function (response) {
-
+         
         var cities = response ;
         var len = 0 ;
 
@@ -760,15 +760,17 @@ $('#country').on('change', function () {
         $('#city').append('<option value="" selected disabled>--Select City--</option>');
      
         
-        var len = cities.length ;
-        if (len > 0) {
-            for (let i = 0; i < len; i++) {
+        if (Array.isArray(response.cities)) {
+            const cities = response.cities;
+            for (let i = 0; i < cities.length; i++) {
                 const id = cities[i].id;
                 const name = cities[i].city_name;
-                $('#city').append(`<option value="${id}" >${name}</option>`);
+                $('#city').append(`<option value="${id}">${name}</option>`);
             }
-            
+        } else {
+            console.error('cities is not an array');
         }
+    
        
          
        },
@@ -800,15 +802,17 @@ $('#country_upd').on('change', function () {
         $('#city_upd').empty();
         $('#city_upd').append('<option value="" selected disabled>--Select City--</option>');
      
-        
-        var len = cities.length ;
-        if (len > 0) {
-            for (let i = 0; i < len; i++) {
+     
+
+        if (Array.isArray(response.cities)) {
+            const cities = response.cities;
+            for (let i = 0; i < cities.length; i++) {
                 const id = cities[i].id;
                 const name = cities[i].city_name;
-                $('#city_upd').append(`<option value="${id}" >${name}</option>`);
+                $('#city_upd').append(`<option value="${id}">${name}</option>`);
             }
-            
+        } else {
+            console.error('cities is not an array');
         }
        
          
@@ -947,6 +951,7 @@ function EditCategory(Clicked) {
     var status = $('#'+Clicked).data('status');
     var image = $('#'+Clicked).data('image');
 
+ 
 
 
     $.ajaxSetup({
@@ -965,17 +970,24 @@ function EditCategory(Clicked) {
         var cities = response ;
         var len = 0 ;
 
-        $('#city').empty();
+        $('#city_upd').empty();
         
         
-        var len = cities.length ;
-        if (len > 0) {
-            for (let i = 0; i < len; i++) {
+        if (Array.isArray(response.cities)) {
+            const cities = response.cities;
+            for (let i = 0; i < cities.length; i++) {
                 const id = cities[i].id;
                 const name = cities[i].city_name;
-                $('#city_upd').append(`<option value="${id}" >${name}</option>`);
+                if (id == city) {
+                    $('#city_upd').append(`<option selected value="${id}">${name}</option>`);
+                    
+                } else {
+                    $('#city_upd').append(`<option value="${id}">${name}</option>`);
+                    
+                }
             }
-            
+        } else {
+            console.error('cities is not an array');
         }
        
          
@@ -989,7 +1001,7 @@ function EditCategory(Clicked) {
     $('#categoryName_upd').val(name);
     $('#categorySlug_upd').val(slug);
     $('#country_upd').val(country);
-    $('#city_upd').val(city);
+    // $('#city_upd').val(city);
     if (status == 1) {
         
     } else {

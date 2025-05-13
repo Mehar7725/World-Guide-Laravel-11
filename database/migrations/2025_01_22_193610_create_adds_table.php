@@ -38,7 +38,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->longText('video')->nullable();
             $table->string('image')->nullable();
-            $table->string('featured_image')->nullable();
+            $table->longText('featured_image')->nullable();
             $table->string('logo')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();

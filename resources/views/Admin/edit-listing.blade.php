@@ -118,7 +118,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
       <div class="flex bg-gray-100 py-6 w-[90%] max-w-[1000px]">
         <!-- Left section (form) -->
         <form id="addForm" action="/update-add" method="POST" enctype="multipart/form-data"> @csrf 
-
+ 
           <input type="hidden" name="add_id" id="add_id" value="{{$add->id}}">
           <input type="hidden" name="payment_id" id="payment_id" value="{{$add->payment_id}}">
           <input type="hidden" name="price" id="price" value="{{$add->price}}">

@@ -18,6 +18,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/admin-register', 'AdminRegister');  
     Route::post('/admin-singin', 'AdminSignIn');  
     Route::get('/admin-logout', 'LogOut');
+    Route::get('/signup-user', 'UserSingUp');  
     Route::post('/signup', 'UserRegister');  
     Route::post('/login', 'UserSignIn');  
     Route::get('/logout', 'UserLogOut');
@@ -71,6 +72,7 @@ Route::controller(AdminController::class)->group(function () {
 Route::controller(PublicController::class)->group(function () {
     Route::get('/', 'Index'); 
     Route::get('/blog', 'Blog'); 
+    Route::get('/blog-details', 'BlogDetails'); 
     Route::get('/our-companies', 'OurCompanies'); 
     Route::get('/about-us', 'AboutUs'); 
     Route::get('/policy', 'Policy'); 
@@ -79,8 +81,10 @@ Route::controller(PublicController::class)->group(function () {
     Route::get('/submit-listing', 'SubmitListing'); 
     Route::get('/country-{name}-{id}-{code}', 'CountryShow')->name('country.show'); 
     Route::get('/city-{name}-{id}-{code}-{city_id}-{city}', 'CityShow')->name('city.show'); 
+    Route::get('/category-{name}-{id}-{code}-{city_id}-{city}-{category_id}-{category}-{slug}', 'CategoryShow')->name('category.show'); 
 
     // Routes For User Add create
+    Route::post('/get-countries', 'GetCountries'); 
     Route::post('/get-cities', 'GetCities'); 
     Route::post('/get-categories', 'GetCategories'); 
     //Routes For Create User Add ====

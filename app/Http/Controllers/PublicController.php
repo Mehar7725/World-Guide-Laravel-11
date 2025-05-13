@@ -11,41 +11,46 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PublicController extends Controller
-{
+{ 
     public function Index()   {
 
         $country = Country::where('status','=',1)->get();
-        return view('Public.index', compact('country'));
+        return view('Public-site.index', compact('country'));
     }
 
     public function Blog()   {
  
-        return view('Public.blog');
+        return view('Public-site.blog');
+    }
+
+    public function BlogDetails()   {
+ 
+        return view('Public-site.blog-detail');
     }
 
     public function OurCompanies()   {
  
-        return view('Public.our-companies');
+        return view('Public-site.our-companies');
     }
 
     public function AboutUs()   {
  
-        return view('Public.about-us');
+        return view('Public-site.about');
     }
 
     public function Policy()   {
  
-        return view('Public.policy');
+        return view('Public-site.policy');
     }
 
     public function ContactUs()   {
  
-        return view('Public.contact-us');
+        return view('Public-site.contact');
     }
 
     public function AddListing()   {
  
-        return view('Public.add-listing');
+        return view('Public-site.listing');
     }
 
     public function SubmitListing(Request $request)   {
@@ -58,20 +63,26 @@ class PublicController extends Controller
           $pricing = $request->query('pricing');
           $time = $request->query('time');
         $country = Country::where(['status'=>1])->get();
+  
           
-        return view('Public.submit-listing', compact('pricing','time','country'));
+        return view('Public-site.add-listing', compact('pricing','time','country'));
     }
 
 
     public function CountryShow($name, $id, $code) {
-        
+    
         $country = Country::where('id', $id)->firstOrFail();
+        $country_id = $id ;
         $city = City::where(['country'=>$id, 'status'=>1])->get();
-        return view('Public.country', compact('country','city','name','code'));
+        $adds = Adds::select('adds.*', 'countries.country_name as country_name')
+        ->join('countries', 'countries.id', '=', 'adds.country') 
+        ->where(['adds.country' => $id,  'adds.status' => 1])
+        ->get();
+        return view('Public-site.country', compact('country','city','name','code','country_id','adds'));
     } 
 
     public function CityShow($name, $id, $code,$city_id,$city) {
-        
+     
         $country = Country::where('id', $id)->firstOrFail();
         $city = City::where('id', $city_id)->firstOrFail();
         $category = Category::where(['country'=>$id,'city'=>$city_id,'status'=>1])->get();
@@ -81,12 +92,41 @@ class PublicController extends Controller
     ->where(['adds.country' => $id, 'adds.city' => $city_id, 'adds.status' => 1])
     ->get();
 
-        return view('Public.city', compact('country','city','name','code','category','adds'));
+        return view('Public-site.city', compact('country','city','name','code','category','adds'));
+    }
+
+
+    // Category Show FUnction Set =====
+
+    public function CategoryShow($name, $id, $code,$city_id,$city,$category_id,$category,$slug) {
+     
+        $country = Country::where('id', $id)->firstOrFail();
+        $city = City::where('id', $city_id)->firstOrFail();
+        $category = Category::where(['id'=>$category_id,'country'=>$id,'city'=>$city_id,'status'=>1])->firstOrFail();
+        $adds = Adds::select('adds.*', 'countries.country_name as country_name', 'cities.city_name as city_name')
+    ->join('countries', 'countries.id', '=', 'adds.country')
+    ->join('cities', 'cities.id', '=', 'adds.city')
+    ->join('categories', 'categories.id', '=', 'adds.category')
+    ->where(['adds.country' => $id, 'adds.city' => $city_id, 'adds.status' => 1])
+    ->get();
+
+ 
+        return view('Public-site.place', compact('country','city','name','code','category','adds'));
     }
 
 
 
     // Functions For User Adds Create Start ============
+
+    public function GetCountries(Request $request)  {
+
+        $country = Country::where(['country_name'=>$request->country,'status'=>1])->first();
+
+        $response['country'] = $country ;
+
+        return response()->json($response);
+        
+    }
 
     public function GetCities(Request $request)  {
 
@@ -166,6 +206,7 @@ class PublicController extends Controller
 
     // Upload Addd Function Start ----------
     public function UploadAdd(Request $request) {
+        
         $add = new Adds();
     
         $add->user_id = Auth::user()->id;
@@ -189,6 +230,7 @@ class PublicController extends Controller
         $add->description = $request->description;
         $add->video = $request->video;
         $add->status = 0;
+
     
         // Ensure the upload directory exists
         $directory = public_path('/assets/adds/data_' . Auth::user()->id);
@@ -206,10 +248,16 @@ class PublicController extends Controller
     
         // Featured Image Upload
         if ($request->hasFile('featured_image')) {
-            $featured_image = $request->file('featured_image');
-            $featured_imageName = time() . '_' . $featured_image->getClientOriginalName();
-            $featured_image->move($directory, $featured_imageName);
-            $add->featured_image = $featured_imageName;
+            $featured_images = $request->file('featured_image');
+            $imageNames = [];
+        
+            foreach ($featured_images as $image) {
+                $imageName = time() . '_' . uniqid() . '_' . $image->getClientOriginalName();
+                $image->move($directory, $imageName);
+                $imageNames[] = $imageName;
+            }
+        
+            $add->featured_image = implode('|*|', $imageNames);
         }
     
         // Logo Upload

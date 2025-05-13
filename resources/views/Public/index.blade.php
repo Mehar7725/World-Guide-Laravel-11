@@ -133,10 +133,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Map -->
     <!-- ===================== -->
     <div class="text-center font-semibold text-xl my-4 mb-6">
-      Just Press On Country You Want To Visit On The Map
+      <h2 style="text-align: center;font-weight: 700;font-size: 35px;">Just Press On Country You Want To Visit On The Map</h2>
+      
     </div>
     <div class="w-full flex justify-center items-center">
-      <div class="MapContainer">
+      <div class="MapContainer" style="position: relative; width: 100%; height: 653px; cursor: default;">
         <svg
           xmlns:mapsvg="http://mapsvg.com"
           xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -145,7 +146,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
           xmlns="http://www.w3.org/2000/svg"
           mapsvg:geoViewBox="-169.110266 83.600842 190.486279 -58.508473"
           width="100%"
-          height="auto"
+          height="100%"
+          style="overflow: hidden; position: relative; left: -0.399994px; top: -0.0999755px;"
           viewBox="0 0 1009.6727 665.96301"
           preserveAspectRatio="xMidYMid meet"
         >
@@ -1455,7 +1457,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
           <img src="assets/country_img/{{$item->country_image}}" alt="{{$item->country_name}}" class="w-full h-full object-cover"  >
       </div><div class="bg-gradient-to-r from-emerald-500 to-cyan-500 p-4 rounded-lg cursor-pointer text-white">
           <div class="flex items-center justify-center text-xl font-semibold">
-              <span>{{$item->country_code}}</span>
+            
               <span class="ml-2">{{$item->country_name}}</span>
           </div>
       </div></div>
@@ -1517,14 +1519,100 @@ href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
       id="footer-navs"
     ></div>
     <script src="assets/public/JS/footer_bottom.js"></script>
-    <script src="assets/public/JS/index.js"></script>
+    {{-- <script src="assets/public/JS/index.js"></script> --}}
     <script src="assets/public/JS/LoginBtn.js"></script>
     {{-- <script src="assets/public/JS/country_guide.js"></script> --}}
     <!-- Add notification scripts here -->
     <script src="assets/public/JS/admin/notifications.js"></script>
-    <script src="assets/public/JS/admin/admin.js"></script>
+    {{-- <script src="assets/public/JS/admin/admin.js"></script> --}}
      <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const tooltip = document.createElement("div");
+          tooltip.style.position = "absolute";
+          tooltip.style.padding = "6px 12px";
+          tooltip.style.background = "#000";
+          tooltip.style.color = "#fff";
+          tooltip.style.borderRadius = "4px";
+          tooltip.style.fontSize = "13px";
+          tooltip.style.pointerEvents = "none";
+          tooltip.style.display = "none";
+          tooltip.style.zIndex = "9999";
+          document.body.appendChild(tooltip);
+      
+          document.querySelectorAll('svg path[title]').forEach((countryPath) => {
+              countryPath.style.cursor = "pointer";
+      
+              countryPath.addEventListener("mouseenter", function (e) {
+                  tooltip.innerText = countryPath.getAttribute("title");
+                  tooltip.style.display = "block"; 
+              });
+      
+              countryPath.addEventListener("mousemove", function (e) {
+                  tooltip.style.left = (e.pageX + 10) + "px";
+                  tooltip.style.top = (e.pageY + 10) + "px";
+              });
+      
+              countryPath.addEventListener("mouseleave", function () {
+                  tooltip.style.display = "none";
+                  countryPath.style.fill = ""; // reset color
+              });
+      
+              countryPath.addEventListener("click", function () {
+                  const country = countryPath.getAttribute("title");
+                
+                  
+                  
+                    $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+                  });
+
+                  $.ajax({
+                      type: "POST",
+                      url: '/get-countries',
+                      data:{   country:country,  _token: '{{csrf_token()}}'},
+                      dataType: 'json',
+                      success: function (response) {
+
+                        console.log(response);
+                        
+                        var country = response.country ;
+                        
+ 
+                        
+                        
+                        if (country != null) {
+
+                          const name = encodeURIComponent(country.country_name ?? 'unknown');
+                      const id = country.id;
+                      const code = encodeURIComponent(country.country_code ?? 'NA');
+
+                      const url = `/country-${name}-${id}-${code}`;
+                      window.open(url, '_blank');
+                                        
+                          
+                           
+                        } else {
+                            console.error('cities is not an array');
+                        }
+                      
+                        
+                      },
+                    
+                  });
+                  
+
+                  
+              });
+          });
+      });
+      </script>
+
 
   </body>
 </html>

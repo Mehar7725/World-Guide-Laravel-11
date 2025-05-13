@@ -456,6 +456,7 @@ public function Category()  {
     )
     ->get();
     $country = Country::where(['status'=>1])->get();
+  
     
     return view('Admin.category_management', compact('country','category'));
 }
@@ -605,7 +606,7 @@ public function AddAdminAction($id,$action)   {
         $selected_city = City::find($add->city);
         $selected_category = Category::find($add->category);
         
-        return view('Admin.edit-listing', compact('add','country','city','category','selected_country','selected_city','selected_category'));
+        return view('Admin.edit-listing-add', compact('add','country','city','category','selected_country','selected_city','selected_category'));
     
     } elseif ($action == 'active') {
         $add->status = 1;
@@ -662,7 +663,7 @@ public function AddAdminAction($id,$action)   {
        
     
         // Ensure the upload directory exists
-        $directory = public_path('/assets/adds/data_' . Auth::user()->id);
+        $directory = public_path('/assets/adds/data_' . $add->user_id);
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
         }
@@ -677,10 +678,33 @@ public function AddAdminAction($id,$action)   {
     
         // Featured Image Upload
         if ($request->hasFile('featured_image')) {
-            $featured_image = $request->file('featured_image');
-            $featured_imageName = time() . '_' . $featured_image->getClientOriginalName();
-            $featured_image->move($directory, $featured_imageName);
-            $add->featured_image = $featured_imageName;
+            $featured_images = $request->file('featured_image');
+            $imageNames = [];
+        
+            foreach ($featured_images as $image) {
+                $imageName = time() . '_' . uniqid() . '_' . $image->getClientOriginalName();
+                $image->move($directory, $imageName);
+                $imageNames[] = $imageName;
+            }
+
+             // Get already selected image names (if any)
+                    $selectedNames = $request->input('selected_image_names');
+                    $selectedNamesArray = [];
+
+                    if (!empty($selectedNames)) {
+                        $selectedNamesArray = explode('|*|', $selectedNames);
+                    }
+
+                    // Combine selected and newly uploaded image names
+                    $allImages = array_merge($selectedNamesArray, $imageNames);
+                     // Save combined result
+                   $add->featured_image = implode('|*|', $allImages);
+        }else {
+            // Handle case where no new files, but still retain old selected images
+            $selectedNames = $request->input('selected_image_names');
+            if (!empty($selectedNames)) {
+                $add->featured_image = $selectedNames;
+            }  
         }
     
         // Logo Upload
